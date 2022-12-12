@@ -16,23 +16,19 @@ public class PlayerMovement : NetworkBehaviour
     float moveInput;
     bool jumpInput;
 
-    public GameObject jumpFieldPrefab;
-    GameObject jumpField;
-
     public override void OnNetworkSpawn()
     {
         if (IsServer)
         {
             rigidBody2d = GetComponent<Rigidbody2D>();
-            jumpField = Instantiate(jumpFieldPrefab, platformCheck.position, Quaternion.identity, transform);
             updateGroundedState();
         }
     }
 
     void updateGroundedState()
     {
-        Vector2 size = new Vector2(jumpField.transform.lossyScale.x, jumpField.transform.lossyScale.y);
-        isGrounded = Physics2D.OverlapBox(point: jumpField.transform.position, size: size, angle: 0, layerMask: platformLayer);
+        Vector2 size = new Vector2(platformCheck.lossyScale.x, platformCheck.lossyScale.y);
+        isGrounded = Physics2D.OverlapBox(point: platformCheck.position, size: size, angle: 0, layerMask: platformLayer);
     }
 
     void Update()

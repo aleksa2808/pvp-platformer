@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8577028115048151735}
   m_Layer: 0
-  m_Name: PlatformCheck
+  m_Name: GroundChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,11 +25,11 @@ Transform:
   m_GameObject: {fileID: 2980306300751298614}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
-  m_LocalScale: {x: 1, y: 0.2, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6381209462513860165}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6381209462513860280
 GameObject:
@@ -50,7 +50,7 @@ GameObject:
   - component: {fileID: -1866551875571121096}
   m_Layer: 0
   m_Name: Player2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -204,7 +204,6 @@ MonoBehaviour:
   platformLayer:
     serializedVersion: 2
     m_Bits: 64
-  jumpFieldPrefab: {fileID: 2793794475940875122, guid: 3658a612f075a4709be382f8bbf0fbd5, type: 3}
 --- !u!114 &-2809942912042086945
 MonoBehaviour:
   m_ObjectHideFlags: 0
