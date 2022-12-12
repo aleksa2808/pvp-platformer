@@ -11,8 +11,7 @@ public class PlayerMovement : NetworkBehaviour
     public Transform platformCheck;
     public LayerMask platformLayer;
 
-    NetworkVariable<bool> isGrounded = new NetworkVariable<bool>();
-    SpriteRenderer spriteRenderer;
+    bool isGrounded;
 
     float moveInput;
     bool jumpInput;
@@ -22,13 +21,10 @@ public class PlayerMovement : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        rigidBody2d = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-        jumpField = Instantiate(jumpFieldPrefab, platformCheck.position, Quaternion.identity, transform);
-
         if (IsServer)
         {
+            rigidBody2d = GetComponent<Rigidbody2D>();
+            jumpField = Instantiate(jumpFieldPrefab, platformCheck.position, Quaternion.identity, transform);
             updateGroundedState();
         }
     }
@@ -36,7 +32,7 @@ public class PlayerMovement : NetworkBehaviour
     void updateGroundedState()
     {
         Vector2 size = new Vector2(jumpField.transform.lossyScale.x, jumpField.transform.lossyScale.y);
-        isGrounded.Value = Physics2D.OverlapBox(point: jumpField.transform.position, size: size, angle: 0, layerMask: platformLayer);
+        isGrounded = Physics2D.OverlapBox(point: jumpField.transform.position, size: size, angle: 0, layerMask: platformLayer);
     }
 
     void Update()
@@ -60,7 +56,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             rigidBody2d.velocity = new Vector2(moveInput * moveSpeed, rigidBody2d.velocity.y);
 
-            if (jumpInput && isGrounded.Value)
+            if (jumpInput && isGrounded)
             {
                 rigidBody2d.velocity = Vector2.up * jumpForce;
             }
