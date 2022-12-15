@@ -9,8 +9,8 @@ public class PlayerSpawner : MonoBehaviour
 {
     NetworkManager networkManager;
 
-    public Vector3 bottomSpawnPosition = new Vector3(x: 1.5f, y: 4f, z: 0);
-    public Vector3 topSpawnPosition = new Vector3(x: 8.5f, y: 6f, z: 0);
+    Vector3 bottomSpawnPosition = new Vector3(x: 1.5f, y: 4f, z: 0);
+    Vector3 topSpawnPosition = new Vector3(x: 8.5f, y: 6f, z: 0);
 
     private void Awake()
     {
@@ -24,7 +24,7 @@ public class PlayerSpawner : MonoBehaviour
         {
             case 0:
                 response.CreatePlayerObject = true;
-                response.PlayerPrefabHash = 2919088946;
+                response.PlayerPrefabHash = 1504847109;
                 // TODO: we should be able to set this in the prefab, but for some reason that is not working
                 response.Position = bottomSpawnPosition;
                 response.Approved = true;
@@ -32,7 +32,7 @@ public class PlayerSpawner : MonoBehaviour
                 break;
             case 1:
                 response.CreatePlayerObject = true;
-                response.PlayerPrefabHash = 3807879726;
+                response.PlayerPrefabHash = 47039940;
                 response.Position = topSpawnPosition;
                 response.Approved = true;
                 Debug.Log("Spawning Player 2");
