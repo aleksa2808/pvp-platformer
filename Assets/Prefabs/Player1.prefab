@@ -15,6 +15,14 @@ PrefabInstance:
       propertyPath: cameraPrefab
       value: 
       objectReference: {fileID: 2803954535971783313, guid: 006c82f81003c4c428cb346a2e1e7dcc, type: 3}
+    - target: {fileID: 6381209462513860163, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
+      propertyPath: jumpForce
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6381209462513860163, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
+      propertyPath: moveSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6381209462513860164, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
       propertyPath: m_GravityScale
       value: 4
