@@ -16,10 +16,9 @@ public class GameController : NetworkBehaviour
 
     public GameObject bottomPlayer;
     public GameObject topPlayer;
-    private PlayerMovement bottomPlayerMovement;
-    private PlayerMovement topPlayerMovement;
+    private PlayerController bottomPlayerController;
+    private PlayerController topPlayerController;
 
-    public GameObject cannon;
     public CannonController cannonController;
 
     public GameObject bottomPowerPad;
@@ -64,9 +63,8 @@ public class GameController : NetworkBehaviour
 
     void Start()
     {
-        bottomPlayerMovement = bottomPlayer.GetComponent<PlayerMovement>();
-        topPlayerMovement = topPlayer.GetComponent<PlayerMovement>();
-        cannonController = cannon.GetComponent<CannonController>();
+        bottomPlayerController = bottomPlayer.GetComponent<PlayerController>();
+        topPlayerController = topPlayer.GetComponent<PlayerController>();
     }
 
     public override void OnNetworkSpawn()
@@ -104,7 +102,7 @@ public class GameController : NetworkBehaviour
             }
             else
             {
-                bottomPlayerMovement.Control(clientMoveInput, clientActionInput);
+                bottomPlayerController.Control(clientMoveInput, clientActionInput);
             }
         }
         else if (serverRpcParams.Receive.SenderClientId == topPlayerClientId)
@@ -115,7 +113,7 @@ public class GameController : NetworkBehaviour
             }
             else
             {
-                topPlayerMovement.Control(clientMoveInput, clientActionInput);
+                topPlayerController.Control(clientMoveInput, clientActionInput);
             }
         }
     }
@@ -130,14 +128,14 @@ public class GameController : NetworkBehaviour
         {
             case PowerPadLocation.Bottom:
                 gameState = GameState.BottomPlayerAdvantage;
-                bottomPlayerMovement.Control(0, false);
+                bottomPlayerController.Control(0, false);
 
                 topPowerPadPositionIndex = topPlayer.transform.position.x >= 5f ? 0 : 1;
 
                 break;
             case PowerPadLocation.Top:
                 gameState = GameState.TopPlayerAdvantage;
-                topPlayerMovement.Control(0, false);
+                topPlayerController.Control(0, false);
 
                 bottomPowerPadPositionIndex = bottomPlayer.transform.position.x >= 5f ? 0 : 1;
 

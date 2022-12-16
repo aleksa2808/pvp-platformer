@@ -921,6 +921,14 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 3705833662
       objectReference: {fileID: 0}
+    - target: {fileID: 349211456544892085, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
+      propertyPath: jumpForce
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 349211456544892085, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
+      propertyPath: moveSpeed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6381209462513860163, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
       propertyPath: jumpForce
       value: 8
@@ -997,7 +1005,8 @@ PrefabInstance:
       propertyPath: gameController
       value: 
       objectReference: {fileID: 2124727493}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6381209462513860163, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
 --- !u!1 &559050551
 GameObject:
@@ -1678,6 +1687,14 @@ PrefabInstance:
     - target: {fileID: -6298505235582396670, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2178019517
+      objectReference: {fileID: 0}
+    - target: {fileID: 349211456544892085, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
+      propertyPath: jumpForce
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 349211456544892085, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
+      propertyPath: moveSpeed
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 6381209462513860163, guid: a08acf6f7256b6b4bb831c20a5dd98ec, type: 3}
       propertyPath: jumpForce
@@ -4940,7 +4957,6 @@ MonoBehaviour:
   gameState: 0
   bottomPlayer: {fileID: 743353914}
   topPlayer: {fileID: 1653550719}
-  cannon: {fileID: 977449828}
-  cannonController: {fileID: 0}
+  cannonController: {fileID: 977449833}
   bottomPowerPad: {fileID: 1201868659}
   topPowerPad: {fileID: 1739322700}
