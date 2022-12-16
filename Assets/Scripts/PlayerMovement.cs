@@ -25,24 +25,23 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    void updateGroundedState()
+    private void updateGroundedState()
     {
         Vector2 size = new Vector2(platformCheck.lossyScale.x, platformCheck.lossyScale.y);
         isGrounded = Physics2D.OverlapBox(point: platformCheck.position, size: size, angle: 0, layerMask: platformLayer);
     }
 
-    void Update()
+    public void Control(float moveInput, bool jumpInput)
+    {
+        this.moveInput = moveInput;
+        this.jumpInput = jumpInput;
+    }
+
+    private void Update()
     {
         if (IsServer)
         {
             updateGroundedState();
-        }
-
-        if (IsOwner)
-        {
-            float moveInput = Input.GetAxisRaw("Horizontal");
-            bool jump = Input.GetKey(KeyCode.Space);
-            MoveServerRpc(moveInput, jump);
         }
     }
 
@@ -57,12 +56,5 @@ public class PlayerMovement : NetworkBehaviour
                 rigidBody2d.velocity = Vector2.up * jumpForce;
             }
         }
-    }
-
-    [ServerRpc]
-    private void MoveServerRpc(float clientMoveInput, bool clientJumpInput)
-    {
-        moveInput = clientMoveInput;
-        jumpInput = clientJumpInput;
     }
 }

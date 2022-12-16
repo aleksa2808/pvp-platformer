@@ -22,6 +22,9 @@ public class NetworkManagerHud : MonoBehaviour
 
     public Color LabelColor = Color.black;
 
+    public GameObject normalCameraPrefab;
+    public GameObject invertedCameraPrefab;
+
     void Awake()
     {
         // Only cache networking manager but not transport here because transport could change anytime.
@@ -76,6 +79,7 @@ public class NetworkManagerHud : MonoBehaviour
         if (GUILayout.Button("Host (Server + Client)"))
         {
             m_NetworkManager.StartHost();
+            Instantiate(normalCameraPrefab, normalCameraPrefab.transform.position, normalCameraPrefab.transform.rotation);
         }
 
         GUILayout.BeginHorizontal();
@@ -83,11 +87,13 @@ public class NetworkManagerHud : MonoBehaviour
         if (GUILayout.Button("Server"))
         {
             m_NetworkManager.StartServer();
+            Instantiate(normalCameraPrefab, normalCameraPrefab.transform.position, normalCameraPrefab.transform.rotation);
         }
 
         if (GUILayout.Button("Client"))
         {
             m_NetworkManager.StartClient();
+            Instantiate(invertedCameraPrefab, invertedCameraPrefab.transform.position, invertedCameraPrefab.transform.rotation);
         }
 
         GUILayout.EndHorizontal();
