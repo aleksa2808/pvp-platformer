@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
+public enum GameState
+{
+    NoAdvantage,
+    BottomPlayerAdvantage,
+    TopPlayerAdvantage,
+};
+
 public class GameController : NetworkBehaviour
 {
-    enum GameState
-    {
-        NoAdvantage,
-        BottomPlayerAdvantage,
-        TopPlayerAdvantage,
-    };
+    public GameState gameState = GameState.NoAdvantage;
 
     public GameObject bottomPlayer;
     public GameObject topPlayer;
@@ -18,12 +20,10 @@ public class GameController : NetworkBehaviour
     private PlayerMovement topPlayerMovement;
 
     public GameObject cannon;
-    public GameObject projectilePrefab;
+    public CannonController cannonController;
 
     public GameObject bottomPowerPad;
     public GameObject topPowerPad;
-
-    public float cannonSpeed;
 
     private List<Vector3> bottomPowerPadPositions = new List<Vector3>() {
         new Vector3(x: 1.5f, y: 2.95f, z: 0f),
@@ -40,11 +40,8 @@ public class GameController : NetworkBehaviour
     private ulong bottomPlayerClientId;
     private ulong topPlayerClientId;
 
-    private GameState gameState = GameState.NoAdvantage;
-
-    private float cannonMoveInput = 0f;
-    private float cannonShootCooldown = 0.5f;
-    private float cannonShootAvailableAt = 0f;
+    private float lastMoveInput = 0f;
+    private bool lastActionInput = false;
 
     public void mapClientIDToPlayer(ulong clientId, PlayerType playerType)
     {
@@ -69,6 +66,7 @@ public class GameController : NetworkBehaviour
     {
         bottomPlayerMovement = bottomPlayer.GetComponent<PlayerMovement>();
         topPlayerMovement = topPlayer.GetComponent<PlayerMovement>();
+        cannonController = cannon.GetComponent<CannonController>();
     }
 
     public override void OnNetworkSpawn()
@@ -81,32 +79,16 @@ public class GameController : NetworkBehaviour
 
     void Update()
     {
-        if (IsServer)
-        {
-
-        }
-
         if (IsClient)
         {
             float moveInput = Input.GetAxisRaw("Horizontal");
-            bool jump = Input.GetKey(KeyCode.Space);
-            MoveServerRpc(moveInput, jump);
-        }
-    }
+            bool actionInput = Input.GetKey(KeyCode.Space);
 
-    private void FixedUpdate()
-    {
-        if (IsServer)
-        {
-            cannon.transform.position = cannon.transform.position + cannonMoveInput * cannonSpeed * Vector3.right * Time.deltaTime;
-
-            if (cannon.transform.position.x > 10f)
+            if (moveInput != lastMoveInput || actionInput != lastActionInput)
             {
-                cannon.transform.position = new Vector3(10f, cannon.transform.position.y, cannon.transform.position.z);
-            }
-            else if (cannon.transform.position.x < 0f)
-            {
-                cannon.transform.position = new Vector3(0f, cannon.transform.position.y, cannon.transform.position.z);
+                MoveServerRpc(moveInput, actionInput);
+                lastMoveInput = moveInput;
+                lastActionInput = actionInput;
             }
         }
     }
@@ -118,7 +100,7 @@ public class GameController : NetworkBehaviour
         {
             if (gameState == GameState.BottomPlayerAdvantage)
             {
-                ControlCannon(clientMoveInput, clientActionInput);
+                cannonController.Control(clientMoveInput, clientActionInput);
             }
             else
             {
@@ -129,7 +111,7 @@ public class GameController : NetworkBehaviour
         {
             if (gameState == GameState.TopPlayerAdvantage)
             {
-                ControlCannon(-clientMoveInput, clientActionInput);
+                cannonController.Control(-clientMoveInput, clientActionInput);
             }
             else
             {
@@ -142,7 +124,7 @@ public class GameController : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        cannonMoveInput = 0;
+        cannonController.Control(0, false);
 
         switch (powerPadLocation)
         {
@@ -173,24 +155,6 @@ public class GameController : NetworkBehaviour
     // {
     //     UpdatePowerPadPositions();
     // }
-
-    private void ControlCannon(float move, bool shoot)
-    {
-        cannonMoveInput = move;
-
-        var t = Time.time;
-        if (shoot && t >= cannonShootAvailableAt)
-        {
-            cannonShootAvailableAt = t + cannonShootCooldown;
-
-            // spawn projectile
-            var prefabPosition = projectilePrefab.transform.position;
-            var cannonPosition = cannon.transform.position;
-            GameObject go = Instantiate(projectilePrefab, new Vector3(cannonPosition.x, cannonPosition.y, prefabPosition.z), Quaternion.identity);
-            go.GetComponent<ProjectileMovement>().moveDirection = gameState == GameState.BottomPlayerAdvantage ? 1 : -1;
-            go.GetComponent<NetworkObject>().Spawn();
-        }
-    }
 
     public void PlayerDamaged(PlayerType playerType)
     {

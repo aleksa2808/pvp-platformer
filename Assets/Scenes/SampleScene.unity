@@ -1773,6 +1773,7 @@ GameObject:
   - component: {fileID: 977449829}
   - component: {fileID: 977449831}
   - component: {fileID: 977449832}
+  - component: {fileID: 977449833}
   m_Layer: 0
   m_Name: Cannon
   m_TagString: Untagged
@@ -1889,6 +1890,21 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 0
+--- !u!114 &977449833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 977449828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 553086dd99c1b3149a73d2e353ae01b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
+  gameController: {fileID: 2124727493}
+  projectilePrefab: {fileID: 5970897851755257692, guid: cc8b93386917ec0438a9b54a2ec7a446, type: 3}
 --- !u!1 &1009187305
 GameObject:
   m_ObjectHideFlags: 0
@@ -4920,10 +4936,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e9f14f1c5522a4aaf06212a62ef2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState: 0
   bottomPlayer: {fileID: 743353914}
   topPlayer: {fileID: 1653550719}
   cannon: {fileID: 977449828}
-  projectilePrefab: {fileID: 5970897851755257692, guid: cc8b93386917ec0438a9b54a2ec7a446, type: 3}
+  cannonController: {fileID: 0}
   bottomPowerPad: {fileID: 1201868659}
   topPowerPad: {fileID: 1739322700}
-  cannonSpeed: 2
