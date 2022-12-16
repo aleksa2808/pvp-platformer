@@ -18,6 +18,7 @@ public class GameController : NetworkBehaviour
     private PlayerMovement topPlayerMovement;
 
     public GameObject cannon;
+    public GameObject projectilePrefab;
 
     public GameObject bottomPowerPad;
     public GameObject topPowerPad;
@@ -28,7 +29,7 @@ public class GameController : NetworkBehaviour
         new Vector3(x: 1.5f, y: 2.95f, z: 0f),
         new Vector3(x: 8.5f, y: 2.95f, z: 0f),
     };
-    private int bottomPowerPadPositionIndex = 0;
+    private int bottomPowerPadPositionIndex = 1;
 
     private List<Vector3> topPowerPadPositions = new List<Vector3>() {
         new Vector3(x: 1.5f, y: 7.05f, z: 0f),
@@ -42,6 +43,8 @@ public class GameController : NetworkBehaviour
     private GameState gameState = GameState.NoAdvantage;
 
     private float cannonMoveInput = 0f;
+    private float cannonShootCooldown = 0.5f;
+    private float cannonShootAvailableAt = 0f;
 
     public void mapClientIDToPlayer(ulong clientId, PlayerType playerType)
     {
@@ -96,6 +99,15 @@ public class GameController : NetworkBehaviour
         if (IsServer)
         {
             cannon.transform.position = cannon.transform.position + cannonMoveInput * cannonSpeed * Vector3.right * Time.deltaTime;
+
+            if (cannon.transform.position.x > 10f)
+            {
+                cannon.transform.position = new Vector3(10f, cannon.transform.position.y, cannon.transform.position.z);
+            }
+            else if (cannon.transform.position.x < 0f)
+            {
+                cannon.transform.position = new Vector3(0f, cannon.transform.position.y, cannon.transform.position.z);
+            }
         }
     }
 
@@ -165,5 +177,25 @@ public class GameController : NetworkBehaviour
     private void ControlCannon(float move, bool shoot)
     {
         cannonMoveInput = move;
+
+        var t = Time.time;
+        if (shoot && t >= cannonShootAvailableAt)
+        {
+            cannonShootAvailableAt = t + cannonShootCooldown;
+
+            // spawn projectile
+            var prefabPosition = projectilePrefab.transform.position;
+            var cannonPosition = cannon.transform.position;
+            GameObject go = Instantiate(projectilePrefab, new Vector3(cannonPosition.x, cannonPosition.y, prefabPosition.z), Quaternion.identity);
+            go.GetComponent<ProjectileMovement>().moveDirection = gameState == GameState.BottomPlayerAdvantage ? 1 : -1;
+            go.GetComponent<NetworkObject>().Spawn();
+        }
+    }
+
+    public void PlayerDamaged(PlayerType playerType)
+    {
+        if (!IsServer) return;
+
+        // TODO: restart match
     }
 }
