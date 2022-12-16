@@ -4,13 +4,13 @@ using UnityEngine;
 public class CannonController : NetworkBehaviour
 {
     public float moveSpeed;
+    public float shootCooldown = 0.7f;
     public GameController gameController;
     public GameObject projectilePrefab;
 
     private float moveInput = 0f;
     private bool shootInput;
 
-    private float shootCooldown = 0.7f;
     private float shootAvailableAt = 0f;
 
 

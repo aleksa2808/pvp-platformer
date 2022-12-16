@@ -1142,8 +1142,8 @@ GameObject:
   m_Component:
   - component: {fileID: 564461959}
   - component: {fileID: 564461962}
-  - component: {fileID: 564461961}
   - component: {fileID: 564461963}
+  - component: {fileID: 564461961}
   m_Layer: 0
   m_Name: PlatformTrigger
   m_TagString: Untagged
@@ -1903,6 +1903,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+  shootCooldown: 0.7
   gameController: {fileID: 2124727493}
   projectilePrefab: {fileID: 5970897851755257692, guid: cc8b93386917ec0438a9b54a2ec7a446, type: 3}
 --- !u!1 &1009187305
@@ -3117,8 +3118,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1386768186}
   - component: {fileID: 1386768189}
-  - component: {fileID: 1386768188}
   - component: {fileID: 1386768190}
+  - component: {fileID: 1386768188}
   m_Layer: 0
   m_Name: PlatformTrigger
   m_TagString: Untagged

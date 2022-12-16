@@ -132,7 +132,6 @@ public class GameController : NetworkBehaviour
                 gameState = GameState.BottomPlayerAdvantage;
                 bottomPlayerMovement.Control(0, false);
 
-                // TODO: improve constant
                 topPowerPadPositionIndex = topPlayer.transform.position.x >= 5f ? 0 : 1;
 
                 break;
@@ -140,21 +139,22 @@ public class GameController : NetworkBehaviour
                 gameState = GameState.TopPlayerAdvantage;
                 topPlayerMovement.Control(0, false);
 
-                // TODO: improve constant
                 bottomPowerPadPositionIndex = bottomPlayer.transform.position.x >= 5f ? 0 : 1;
 
                 break;
         };
         Debug.Log(gameState);
         UpdatePowerPadPositions();
-        // UpdatePowerPadPositionsClientRpc();
+        UpdatePowerPadPositionsClientRpc(bottomPowerPadPositionIndex, topPowerPadPositionIndex);
     }
 
-    // [ClientRpc]
-    // void UpdatePowerPadPositionsClientRpc()
-    // {
-    //     UpdatePowerPadPositions();
-    // }
+    [ClientRpc]
+    void UpdatePowerPadPositionsClientRpc(int bottomPowerPadPositionIndex, int topPowerPadPositionIndex)
+    {
+        this.bottomPowerPadPositionIndex = bottomPowerPadPositionIndex;
+        this.topPowerPadPositionIndex = topPowerPadPositionIndex;
+        UpdatePowerPadPositions();
+    }
 
     public void PlayerDamaged(PlayerType playerType)
     {
